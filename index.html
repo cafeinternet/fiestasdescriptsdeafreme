@@ -21,7 +21,27 @@
   <!-- https://github.com/mayognaise/aframe-gif-component  scripts de gif animados -->
   <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
   <script src="https://rawgit.com/mayognaise/aframe-gif-component/master/dist/aframe-gif-component.min.js"></script>
-  
+  <script>
+    AFRAME.registerComponent("play", {
+      init: function() {
+        this.onClick = this.onClick.bind(this);
+      },
+      play: function() {
+        window.addEventListener("click", this.onClick);
+      },
+      pause: function() {
+        window.removeEventListener("click", this.onClick);
+      },
+      onClick: function(evt) {
+        var video = document.getElementById("vid");
+
+        if (!video) {
+          return;
+        }
+        video.play();
+      }
+    });
+  </script>
 </head>
 
 <body>
@@ -41,6 +61,17 @@
       <a-asset-item id="perro" src="./assets/perro-ahora.gltf"></a-asset-item>
       <a-asset-item id="ogro" src="./assets/ogro.gltf"></a-asset-item>
       <a-asset-item id="cara" src="./assets/cara.gltf"></a-asset-item>
+
+<!-- url del video -->
+<video
+id="vid"
+src="./assets/video1.mp4"
+loop="true"
+crossorigin="anonymous"
+controls="true"
+></video>
+
+
     </a-assets>
 
     <!--OBJETOS -->
@@ -66,7 +97,15 @@
    <a-entity geometry="primitive:plane"   position="-4.78781 0.55141 2.01366" material="shader:gif;src:url(./assets/giphy.gif); transparent: true;alphaTest:0.5; side:double" gif=""></a-entity>
    <a-entity geometry="primitive: cone" position="-4.78781 0.55141 2.01366" material="shader: gif; src: url(./assets/cheems1.gif);  transparent: true;alphaTest:0.5; side:double" gif=""></a-entity>
    
-   
+   <!-- video -->
+   <a-entity
+   geometry="primitive: torus; "
+   material="src:#vid;side:double;height:800;width:1280"
+   position="0 0 0"
+   scale="30 30 30"
+   play
+ > </a-entity>
+
     <!-- ILUMINACIÓN -->
     <a-entity light="type: point;" position="0.949 4.494 -7.408"></a-entity>
     <a-entity light="intensity: 0.6; type: ambient" position="0 9.339 -14.594"></a-entity>
@@ -75,6 +114,11 @@
     <a-entity environment="preset: default; groundColor: #445; grid: cross"></a-entity>
 
   </a-scene>
+
+
+
+    
+ 
 </body>
 
 </html>
